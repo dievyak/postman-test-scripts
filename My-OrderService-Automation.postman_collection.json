@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "ac1ff104-9f92-4c56-92f4-fac72a4d8543",
-		"name": "MyZeissVision-LensOrderService-Automation",
+		"_postman_id": "ac1ff104-9f92-4c56-92f4-fac72a8huhuhu4d8543",
+		"name": "My-OrderService-Automation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30591606"
+		"_exporter_id": "305916xx6"
 	},
 	"item": [
 		{
-			"name": "lens-order-valid SAPP31",
+			"name": "order-valid SAPP31",
 			"event": [
 				{
 					"listen": "test",
@@ -72,7 +72,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-rejectionOrder-cancelled",
+			"name": "order-rejectionOrder-cancelled",
 			"event": [
 				{
 					"listen": "test",
@@ -144,7 +144,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order- SAPP31 without globalOrderId",
+			"name": "order- SAPP31 without globalOrderId",
 			"event": [
 				{
 					"listen": "test",
@@ -304,7 +304,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-OrderInfo \"Creation Date\" format validation",
+			"name": "order-OrderInfo \"Creation Date\" format validation",
 			"event": [
 				{
 					"listen": "test",
@@ -379,7 +379,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-OrderInfo \"Creation Date\" - invalid",
+			"name": "order-OrderInfo \"Creation Date\" - invalid",
 			"event": [
 				{
 					"listen": "test",
@@ -496,7 +496,7 @@
 		},
 		{
 			"key": "Ocp-Apim-Subscription-Key",
-			"value": "999476f4be6a429aa26284d45ab6d89d",
+			"value": "999476f4be6a429aa2xxxxxxxxxxxxxxxxx89d",
 			"type": "string"
 		},
 		{
