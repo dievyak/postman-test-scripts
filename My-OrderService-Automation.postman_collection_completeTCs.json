@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "ac1ff104-9f92-4c56-92f4-fac72a4d8543",
-		"name": "MyZeissVision-LensOrderService-Automation",
+		"_postman_id": "axxxc1ff104-9f92-4c56-92f4-fac72a4d8543",
+		"name": "My-OrderService-Automation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30591606"
 	},
 	"item": [
 		{
-			"name": "lens-order-valid SAPP31",
+			"name": "order-valid SAPP31",
 			"event": [
 				{
 					"listen": "test",
@@ -455,7 +455,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-without field \"lensEdiCode\"",
+			"name": "order-without field \"lensEdiCode\"",
 			"event": [
 				{
 					"listen": "test",
@@ -530,7 +530,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-with field \"lensEdiCode\" string validation",
+			"name": "order-with field \"lensEdiCode\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -604,7 +604,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"name\" integer validation",
+			"name": "order-lensMetaData \"name\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -680,7 +680,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"product line\" integer validation",
+			"name": "order-lensMetaData \"product line\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -756,7 +756,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"technicalMaterial\" integer validation",
+			"name": "order-lensMetaData \"technicalMaterial\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -832,7 +832,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"focalType\" integer validation",
+			"name": "order-lensMetaData \"focalType\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -908,7 +908,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"lensTechnicalDesign\" integer validation",
+			"name": "order-lensMetaData \"lensTechnicalDesign\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -984,7 +984,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"materialGroup\" integer validation",
+			"name": "order-lensMetaData \"materialGroup\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1060,7 +1060,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensMetaData \"index\" string validation",
+			"name": "order-lensMetaData \"index\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1136,7 +1136,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"sphere\" string validation",
+			"name": "order-refractionData \"sphere\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1212,7 +1212,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"cylinder\" string validation",
+			"name": "order-refractionData \"cylinder\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1289,7 +1289,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"axis\" string validation",
+			"name": "order-refractionData \"axis\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1366,7 +1366,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"axis\" float validation",
+			"name": "order-refractionData \"axis\" float validation",
 			"event": [
 				{
 					"listen": "test",
@@ -1443,7 +1443,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"sphere\" null value",
+			"name": "order-refractionData \"sphere\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -1512,7 +1512,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"sphere\" valid value",
+			"name": "order-refractionData \"sphere\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -1581,7 +1581,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"cylinder\" null value",
+			"name": "order-refractionData \"cylinder\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -1650,7 +1650,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"cylinder\" vaild value",
+			"name": "order-refractionData \"cylinder\" vaild value",
 			"event": [
 				{
 					"listen": "test",
@@ -1719,7 +1719,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"axis\" null value",
+			"name": "order-refractionData \"axis\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -1788,7 +1788,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"axis\" valid integer",
+			"name": "order-refractionData \"axis\" valid integer",
 			"event": [
 				{
 					"listen": "test",
@@ -1857,7 +1857,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"addition\" valid integer",
+			"name": "order-refractionData \"addition\" valid integer",
 			"event": [
 				{
 					"listen": "test",
@@ -1926,7 +1926,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resPrism\" valid value",
+			"name": "order-refractionData \"resPrism\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -1995,7 +1995,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resPrism\" null value",
+			"name": "order-refractionData \"resPrism\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -2064,7 +2064,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resBase\" null value",
+			"name": "order-refractionData \"resBase\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -2133,7 +2133,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resBase\" valid value",
+			"name": "order-refractionData \"resBase\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -2202,7 +2202,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resBase\" negative integer validaiton",
+			"name": "order-refractionData \"resBase\" negative integer validaiton",
 			"event": [
 				{
 					"listen": "test",
@@ -2278,7 +2278,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"resPrism\" string validation",
+			"name": "order-refractionData \"resPrism\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -2354,7 +2354,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-refractionData \"addition\" negative integer validation",
+			"name": "order-refractionData \"addition\" negative integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -2430,7 +2430,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-centrationData \"monocularPd\" valid value",
+			"name": "order-centrationData \"monocularPd\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -2499,7 +2499,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-centrationData \"monocularPd\" null value",
+			"name": "order-centrationData \"monocularPd\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -2569,7 +2569,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-centrationData \"monocularPd\" negative integer validation",
+			"name": "order-centrationData \"monocularPd\" negative integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -2645,7 +2645,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-centrationData \"monocularPd\" string validation",
+			"name": "order-centrationData \"monocularPd\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -2721,7 +2721,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"length\" valid value",
+			"name": "order-frameData \"length\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -2791,7 +2791,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"width\" valid value",
+			"name": "order-frameData \"width\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -2861,7 +2861,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"length\" null value",
+			"name": "order-frameData \"length\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -2931,7 +2931,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"width\" null value",
+			"name": "order-frameData \"width\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -3001,7 +3001,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"length\" negative integer validation",
+			"name": "order-frameData \"length\" negative integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3077,7 +3077,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"width\" negative integer validation",
+			"name": "order-frameData \"width\" negative integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3153,7 +3153,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"length\" string validation",
+			"name": "order-frameData \"length\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3229,7 +3229,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-frameData \"width\" string validation",
+			"name": "order-frameData \"width\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3305,7 +3305,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-additionalTechnicalData \"nearType\" valid value",
+			"name": "order-additionalTechnicalData \"nearType\" valid value",
 			"event": [
 				{
 					"listen": "test",
@@ -3375,7 +3375,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-additionalTechnicalData \"nearType\" null value",
+			"name": "order-additionalTechnicalData \"nearType\" null value",
 			"event": [
 				{
 					"listen": "test",
@@ -3445,7 +3445,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-additionalTechnicalData \"nearType\" integer validation",
+			"name": "order-additionalTechnicalData \"nearType\" integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3521,7 +3521,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensOption \"color\" string validation",
+			"name": "order-lensOption \"color\" string validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3597,7 +3597,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensOption \"colorDescription\" Integer validation",
+			"name": "order-lensOption \"colorDescription\" Integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3674,7 +3674,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensOption \"coatingCode\" Integer validation",
+			"name": "order-lensOption \"coatingCode\" Integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3750,7 +3750,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-lensOption \"coatingDescription\" Integer validation",
+			"name": "order-lensOption \"coatingDescription\" Integer validation",
 			"event": [
 				{
 					"listen": "test",
@@ -3826,7 +3826,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-delivery status invalid data",
+			"name": "order-delivery status invalid data",
 			"event": [
 				{
 					"listen": "test",
@@ -3907,7 +3907,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-same customer with different sd number",
+			"name": "order-same customer with different sd number",
 			"event": [
 				{
 					"listen": "test",
@@ -3977,7 +3977,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-different customer with same sd number",
+			"name": "order-different customer with same sd number",
 			"event": [
 				{
 					"listen": "test",
@@ -4052,7 +4052,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-OrderInfo \"Creation Date\" format validation",
+			"name": "order-OrderInfo \"Creation Date\" format validation",
 			"event": [
 				{
 					"listen": "test",
@@ -4127,7 +4127,7 @@
 			"response": []
 		},
 		{
-			"name": "lens-order-OrderInfo \"Creation Date\" - invalid",
+			"name": "order-OrderInfo \"Creation Date\" - invalid",
 			"event": [
 				{
 					"listen": "test",
