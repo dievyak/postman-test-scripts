@@ -1,0 +1,4283 @@
+{
+	"info": {
+		"_postman_id": "ac1ff104-9f92-4c56-92f4-fac72a4d8543",
+		"name": "MyZeissVision-LensOrderService-Automation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30591606"
+	},
+	"item": [
+		{
+			"name": "lens-order-valid SAPP31",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\", JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"version\": \"1.0\",\r\n    \"erpSystem\": \"SAPP31\",\r\n    \"lensOrderDetails\": [\r\n        {\r\n            \"orderInfo\": {{orderInfo}},\r\n            \"customer\": {{customer}},\r\n            \"lensOptions\": {{lensOptions}},\r\n            \"lensPrescriptionData\": {{lensPrescriptionData}}\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-rejectionOrder-cancelled",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// check the db manually for the field is_cancelled = True"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\", JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const orderVariable = JSON.parse(pm.variables.get(\"orderInfo\"));\r",
+							"orderVariable.rejectionReason = \"dummy\"\r",
+							"orderJsonString = JSON.stringify(orderVariable);\r",
+							"pm.variables.set(\"orderInfo\", orderJsonString);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"version\": \"1.0\",\r\n    \"erpSystem\": \"SAPP31\",\r\n    \"lensOrderDetails\": [\r\n        {\r\n            \"orderInfo\": {{orderInfo}},\r\n            \"customer\": {{customer}},\r\n            \"lensOptions\": {{lensOptions}},\r\n            \"lensPrescriptionData\": {{lensPrescriptionData}}\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order- SAPP31 without globalOrderId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"No Global Order Id P0 provided for SAPP31 system\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"erpSystem\", \"SAPP31\");\r",
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\", JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"pm.variables.set(\"orderInfo\",JSON.stringify({\r",
+							"            \"sdNumber\":456789001230014,\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"676Te\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\"\r",
+							"         }));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-sd number string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Int64. Path: $.lensOrderDetails[0].orderInfo.sdNumber | LineNumber: 5 | BytePositionInLine: 39.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"         pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":\"dummy\",\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"676Te\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-customer number string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Int64. Path: $.lensOrderDetails[0].customer.number | LineNumber: 14 | BytePositionInLine: 36.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":\"dummy\",\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-globalorderId string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Int64]. Path: $.lensOrderDetails[0].orderInfo.globalOrderIdP0 | LineNumber: 5 | BytePositionInLine: 204.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"         pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":456789001230014,\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"676Te\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\",\r",
+							"            \"globalOrderIdP0\":\"dummy\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-without field \"lensEdiCode\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field LensEdiCode must be between 1 and 9.223372036854776E+18.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"delete defaultLensPrescriptionData.leftLens.lensMetadata.lensEdiCode;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-with field \"lensEdiCode\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Int64. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.lensEdiCode | LineNumber: 21 | BytePositionInLine: 81.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.lensEdiCode = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"name\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.name | LineNumber: 21 | BytePositionInLine: 93.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.name = 879780;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"product line\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.productLine | LineNumber: 21 | BytePositionInLine: 148.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.productLine = 878656;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"technicalMaterial\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.materialVariant | LineNumber: 21 | BytePositionInLine: 182.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.materialVariant = 878656;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"focalType\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.focalType | LineNumber: 21 | BytePositionInLine: 219.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.focalType = 878656;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"lensTechnicalDesign\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.lensTechnicalDesign | LineNumber: 21 | BytePositionInLine: 255.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.lensTechnicalDesign = 878656;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"materialGroup\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.materialGroup | LineNumber: 21 | BytePositionInLine: 290.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.materialGroup = 878656;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensMetaData \"index\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Decimal. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.lensMetadata.index | LineNumber: 21 | BytePositionInLine: 309.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.lensMetadata.index = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"sphere\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Decimal]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.refractionData.sphere | LineNumber: 21 | BytePositionInLine: 362.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.sphere = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"cylinder\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Decimal]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.refractionData.cylinder | LineNumber: 21 | BytePositionInLine: 378.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.cylinder = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"axis\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Int32]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.refractionData.axis | LineNumber: 21 | BytePositionInLine: 390.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.axis = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"axis\" float validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Int32]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.refractionData.axis | LineNumber: 21 | BytePositionInLine: 392.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.axis = 12.343434;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"sphere\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.sphere = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"sphere\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.sphere = -12.5;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"cylinder\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.cylinder = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"cylinder\" vaild value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.cylinder = -0.768;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"axis\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.axis = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"axis\" valid integer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.axis = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"addition\" valid integer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.addition = 1.57;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resPrism\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resPrism = -3;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resPrism\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resPrism = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resBase\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resBase = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resBase\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resBase = 8.23;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resBase\" negative integer validaiton",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field ResBase must be between 0 and 9.223372036854776E+18.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resBase = -3;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"resPrism\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 \", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Decimal]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.refractionData.resPrism | LineNumber: 21 | BytePositionInLine: 422.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.resPrism = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-refractionData \"addition\" negative integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field Addition must be between 0 and 9.223372036854776E+18.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.refractionData.addition = -1.57;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-centrationData \"monocularPd\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.centrationData.monocularPd = 55.4;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-centrationData \"monocularPd\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.centrationData.monocularPd = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-centrationData \"monocularPd\" negative integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field MonocularPd must be between 0 and 9.223372036854776E+18.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.centrationData.monocularPd = -5.78;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-centrationData \"monocularPd\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Decimal]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.centrationData.monocularPd | LineNumber: 21 | BytePositionInLine: 478.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.centrationData.monocularPd = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"length\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.length = 51.78;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"width\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.width = 51.78;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"length\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.length = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"width\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.width = null;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"length\" negative integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field Length must be between 0 and 9.223372036854776E+18.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.length = -56.78;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"width\" negative integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field Width must be between 0 and 9.223372036854776E+18.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.width = -56.78;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"length\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Decimal]. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.frameData.length | LineNumber: 21 | BytePositionInLine: 507.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.length = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-frameData \"width\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.contains(\"Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.frameData.width\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.frameData.width = \"dummy\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-additionalTechnicalData \"nearType\" valid value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.additionalTechnicalData.nearType = \"J\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-additionalTechnicalData \"nearType\" null value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.additionalTechnicalData.nearType = \"null\";\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-additionalTechnicalData \"nearType\" integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", ()=> {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensPrescriptionData.leftLens.additionalTechnicalData.nearType | LineNumber: 21 | BytePositionInLine: 559.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensPrescriptionData = JSON.parse(pm.variables.get(\"lensPrescriptionData\"));\r",
+							"defaultLensPrescriptionData.leftLens.additionalTechnicalData.nearType = 2342;\r",
+							"pm.variables.set(\"lensPrescriptionData\", JSON.stringify(defaultLensPrescriptionData));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensOption \"color\" string validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Int32]. Path: $.lensOrderDetails[0].lensOptions.colorCode | LineNumber: 15 | BytePositionInLine: 42.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensOptions = JSON.parse(pm.variables.get(\"lensOptions\"));\r",
+							"defaultLensOptions.colorCode = \"dummy\";\r",
+							"pm.variables.set(\"lensOptions\", JSON.stringify(defaultLensOptions));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensOption \"colorDescription\" Integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensOptions.colorDescription | LineNumber: 15 | BytePositionInLine: 62.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensOptions = JSON.parse(pm.variables.get(\"lensOptions\"));\r",
+							"defaultLensOptions.colorDescription = 345356;\r",
+							"pm.variables.set(\"lensOptions\", JSON.stringify(defaultLensOptions));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensOption \"coatingCode\" Integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensOptions.coatingCode | LineNumber: 15 | BytePositionInLine: 82.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensOptions = JSON.parse(pm.variables.get(\"lensOptions\"));\r",
+							"defaultLensOptions.coatingCode = 896754;\r",
+							"pm.variables.set(\"lensOptions\", JSON.stringify(defaultLensOptions));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-lensOption \"coatingDescription\" Integer validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.text();\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.String. Path: $.lensOrderDetails[0].lensOptions.coatingDescription | LineNumber: 15 | BytePositionInLine: 108.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"\r",
+							"const defaultLensOptions = JSON.parse(pm.variables.get(\"lensOptions\"));\r",
+							"defaultLensOptions.coatingDescription = 896754;\r",
+							"pm.variables.set(\"lensOptions\", JSON.stringify(defaultLensOptions));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-delivery status invalid data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The JSON value could not be converted to System.Nullable`1[System.Int64]. Path: $.lensOrderDetails[0].orderInfo.globalOrderIdP0 | LineNumber: 5 | BytePositionInLine: 217.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"         pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":456789001230014,\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"676Te\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"openclosedinvalid\",\r",
+							"            \"globalOrderIdP0\":\"dummy\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-same customer with different sd number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":5098765267890,\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"DE\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-different customer with same sd number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\", JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":\"509876567890\",\r",
+							"            \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"DE\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-OrderInfo \"Creation Date\" format validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\",  JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"         pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"            \"sdNumber\":7867540987681,\r",
+							"           \"creationDate\": \"10-11-2024\",\r",
+							"            \"countryOfSales\":\"676Te\",\r",
+							"            \"salesDocType\":\"hellouu\",\r",
+							"            \"rejectionReason\":\"assigned\",\r",
+							"            \"deliveryStatus\":\"open\"\r",
+							"         }));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lens-order-OrderInfo \"Creation Date\" - invalid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should have a proper error message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.failures[0].errorMessages[0]).to.eql(\"The field CreationDate must be in dd-MM-yyyy format.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNumber = _.random(1000000,9999999);\r",
+							"pm.variables.set(\"customer\", JSON.stringify({\r",
+							"            \"number\":randomNumber,\r",
+							"            \"name\":\"dr.curie\"\r",
+							"         }));\r",
+							"pm.variables.set(\"orderInfo\", JSON.stringify({\r",
+							"    \"sdNumber\":7867540987681,\r",
+							"    \"creationDate\": \"190luvgfrdv-78-2024\",\r",
+							"    \"countryOfSales\":\"676Te\",\r",
+							"    \"salesDocType\":\"hellouu\",\r",
+							"    \"rejectionReason\":\"assigned\",\r",
+							"    \"deliveryStatus\":\"open\"\r",
+							"}));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"version\":\"1.0\",\r\n   \"erpSystem\":\"{{erpSystem}}\",\r\n   \"lensOrderDetails\":[\r\n    {\r\n        \"orderInfo\":{{orderInfo}},\r\n        \"customer\":{{customer}},\r\n        \"lensOptions\":{{lensOptions}},\r\n        \"lensPrescriptionData\":{{lensPrescriptionData}}\r\n    } \r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/lens-order/batch",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"lens-order",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.variables.unset(\"erpSystem\")\r",
+					"pm.variables.unset(\"orderInfo\")\r",
+					"pm.variables.unset(\"customer\")\r",
+					"pm.variables.unset(\"lensPrescriptionData\")\r",
+					"pm.variables.unset(\"lensOptions\")"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_URL",
+			"value": "https://api-vision-dev-d7g3dge6gse5cba0.a03.azurefd.net",
+			"type": "string"
+		},
+		{
+			"key": "erpSystem",
+			"value": "AS400",
+			"type": "string"
+		},
+		{
+			"key": "Ocp-Apim-Subscription-Key",
+			"value": "999476f4be6a429aa26284d45ab6d89d",
+			"type": "string"
+		},
+		{
+			"key": "orderInfo",
+			"value": "{\n            \"sdNumber\":456789001230014,\n            \"creationDate\":\"10-11-2024\",\n            \"globalOrderIdP0\":213400113,\n            \"countryOfSales\":\"DE\",\n            \"salesDocType\":\"hellouu\",\n            \"rejectionReason\":\"Not assigned\",\n            \"deliveryStatus\":\"open\"\n         }",
+			"type": "string"
+		},
+		{
+			"key": "customer",
+			"value": "{\n            \"number\":600120903212199021,\n            \"name\":\"dr.curie\"\n         }",
+			"type": "string"
+		},
+		{
+			"key": "lensEdiCode",
+			"value": "231370",
+			"type": "string"
+		},
+		{
+			"key": "lensMetaDate",
+			"value": "{\n            \"name\":\"ZEISS Progressive SmartLife Superb 1.6\",\n            \"productLine\":\"SmartLifetest\",\n            \"technicalMaterial\":\"Organic 1.67 BlueGuard\",\n            \"focalType\":\"Progressive\",\n            \"lensTechnicalDesign\":\"PRG Madonna Easy\",\n            \"materialGroup\":\"Organic\",\n            \"index\":343.786899\n         }",
+			"type": "string"
+		},
+		{
+			"key": "lensOptions",
+			"value": "{\n            \"colorCode\":7,\n            \"colorDescription\":\"Red\",\n            \"coatingCode\":\"HM\",\n            \"coatingDescription\":\"Duravision\"\n         }",
+			"type": "string"
+		},
+		{
+			"key": "lensPrescriptionData",
+			"value": "{\n            \"leftLens\":{\n               \"lensMetadata\":{\n                  \"lensEdiCode\":23134,\n                  \"name\":\"ZEISS Progressive SmartLife Superb 1.6\",\n                  \"productLine\":\"SmartLifetest\",\n                  \"materialVariant\":\"Organic 1.67 BlueGuard\",\n                  \"focalType\":\"Progressive\",\n                  \"lensTechnicalDesign\":\"PRG Madonna Easy\",\n                  \"materialGroup\":\"Organic\",\n                  \"index\":343.786899,\n                  \"diameter\":70\n               },\n               \"refractionData\":{\n                  \"sphere\":19.50,\n                  \"cylinder\":0.75,\n                  \"axis\":124,\n                  \"addition\":10.25,\n                  \"resPrism\":12.435,\n                  \"resBase\":9.223\n               },\n               \"centrationData\":{\n                  \"monocularPd\":76.09\n               },\n               \"frameData\":{\n                  \"length\":61.0,\n                  \"width\":13.90\n               },\n               \"additionalTechnicalData\":{\n                  \"nearType\":\"I\"\n               }\n            },\n            \"rightLens\":{\n               \"lensMetadata\":{\n                  \"lensEdiCode\":46407,\n                  \"name\":\"ZEISS Progressive SmartLife Superb 1.6\",\n                  \"productLine\":\"SmartLife\",\n                  \"materialVariant\":\"BlueGuard\",\n                  \"focalType\":\"Progressive\",\n                  \"lensTechnicalDesign\":\"PRG Madonna Easy\",\n                  \"materialGroup\":\"Organic\",\n                  \"index\":1.67,\n                  \"diameter\":70\n               },\n               \"refractionData\":{\n                  \"sphere\":-1.25,\n                  \"cylinder\":0.50,\n                  \"axis\":60,\n                  \"addition\":1.50,\n                  \"resPrism\":12.435,\n                  \"resBase\":9.223\n               },\n               \"centrationData\":{\n                  \"monocularPd\":76.09\n               },\n               \"frameData\":{\n                  \"length\":61.0,\n                  \"width\":13.90\n               },\n               \"additionalTechnicalData\":{\n                  \"nearType\":\"I\"\n               }\n            }\n         }",
+			"type": "string"
+		}
+	]
+}
