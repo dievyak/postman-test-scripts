@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "94a441b8-825e-49xxxxxxxxxxxxxx",
+		"name": "Mytestdemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30591606"
+	},
+	"item": [
+		{
+			"name": "unique-id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/unique-id/{{customerNumber}}/{{orderNumber}}",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"unique-id",
+						"{{customerNumber}}",
+						"{{orderNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate-uniqueId",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{Ocp-Apim-Subscription-Key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"salesDocumentNumber\": 1,\r\n    \"customerNumber\": 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_URL}}/public/api/chub/slr/generate-unique-id",
+					"host": [
+						"{{base_URL}}"
+					],
+					"path": [
+						"public",
+						"api",
+						"chub",
+						"slr",
+						"generate-unique-id"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "customerNumber",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "orderNumber",
+			"value": "12123",
+			"type": "string"
+		},
+		{
+			"key": "Ocp-Apim-Subscription-Key",
+			"value": "swdfsdfsdfsdf29aa26284d45ab6d89d",
+			"type": "string"
+		},
+		{
+			"key": "base_URL",
+			"value": "https://api-vision-dev-xxxxx.xxxxx.azurefd.net",
+			"type": "string"
+		}
+	]
+}
