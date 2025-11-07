@@ -1,4 +1,4 @@
-//Generate unique ID:
+//Generates unique ID and tests uniqueID api works as expected
 
 {
 	"info": {
