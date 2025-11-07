@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "ac1ff104-9f92-4c56-92f4-fac72a4d8543",
-		"name": "MyZeissVision-LensOrderService-Automation",
+		"name": "My-LensOrderService-Automation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30591606"
 	},
