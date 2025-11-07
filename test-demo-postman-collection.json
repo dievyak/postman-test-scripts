@@ -1,9 +1,9 @@
-//Generates unique ID and tests uniqueID api works as expected
+
 
 {
 	"info": {
 		"_postman_id": "94a441b8-825e-49xxxxxxxxxxxxxx",
-		"name": "Mytestdemo",
+		"name": "Myvisiondemo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30591606"
 	},
